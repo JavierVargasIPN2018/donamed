@@ -36,6 +36,13 @@ const eslintConfig = defineConfig([
       ],
     },
   },
+  // Allow API routes to import from server (this is correct architecture)
+  {
+    files: ["src/app/api/**/*"],
+    rules: {
+      "no-restricted-imports": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
