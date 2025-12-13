@@ -13,6 +13,42 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  // Prevent client from importing server
+  {
+    files: ["src/client/**/*"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/server/*", "**/server/**", "@/server/*", "@/server/**"],
+              message:
+                "❌ Client cannot import from Server directly. Use API endpoints or shared types.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  // Prevent server from importing client
+  {
+    files: ["src/server/**/*"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/client/*", "**/client/**", "@/client/*", "@/client/**"],
+              message:
+                "❌ Server cannot import from Client. Keep business logic independent of UI.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;
