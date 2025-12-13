@@ -13,34 +13,40 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
-  // Custom rules to enforce architecture
+  // Prevent client from importing server
   {
+    files: ["src/client/**/*"],
     rules: {
-      // Prevent cross-imports between client and server
       "no-restricted-imports": [
         "error",
         {
           patterns: [
             {
-              group: ["**/server/*", "**/server/**"],
+              group: ["**/server/*", "**/server/**", "@/server/*", "@/server/**"],
               message:
                 "❌ Client cannot import from Server directly. Use API endpoints or shared types.",
-            },
-            {
-              group: ["**/client/*", "**/client/**"],
-              message:
-                "❌ Server cannot import from Client. Keep business logic independent of UI.",
             },
           ],
         },
       ],
     },
   },
-  // Allow API routes to import from server (this is correct architecture)
+  // Prevent server from importing client
   {
-    files: ["src/app/api/**/*"],
+    files: ["src/server/**/*"],
     rules: {
-      "no-restricted-imports": "off",
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/client/*", "**/client/**", "@/client/*", "@/client/**"],
+              message:
+                "❌ Server cannot import from Client. Keep business logic independent of UI.",
+            },
+          ],
+        },
+      ],
     },
   },
 ]);
