@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DonaMed - Plataforma de Donación de Medicamentos
 
-## Getting Started
+Plataforma web para conectar donadores y receptores de medicamentos, facilitando donaciones seguras y trazables.
 
-First, run the development server:
+## 🏗️ Arquitectura
+
+Este proyecto sigue una **arquitectura hexagonal** con separación estricta entre cliente y servidor:
+
+- **Frontend**: Next.js 16 + React 19 + shadcn/ui
+- **Backend**: Servicios TypeScript puros (portables)
+- **Base de Datos**: PostgreSQL + Drizzle ORM
+- **Estrategia**: AgileFlow (trunk-based development)
+
+📚 **Documentación completa**: [ARCHITECTURE.md](./docs/ARCHITECTURE.md)
+
+## 🚀 Quick Start
+
+### Prerrequisitos
+
+- Node.js 20+
+- pnpm 8+
+- Docker (para PostgreSQL)
+
+### Instalación
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clonar el repositorio
+git clone https://github.com/JavierVargasIPN2018/donamed.git
+cd donamed
+
+# Instalar dependencias
+pnpm install
+
+# Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus valores
+
+# Levantar base de datos
+docker-compose up -d
+
+# Generar schemas de base de datos
+pnpm run db:push
+
+# Correr en desarrollo
+pnpm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Scripts Disponibles
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Desarrollo
+pnpm dev              # Servidor de desarrollo
+pnpm build            # Build de producción
+pnpm start            # Servidor de producción
+pnpm lint             # Ejecutar ESLint
 
-## Learn More
+# Base de Datos
+pnpm db:generate      # Generar migraciones
+pnpm db:migrate       # Ejecutar migraciones
+pnpm db:push          # Push schema a DB (dev)
+pnpm db:studio        # Abrir Drizzle Studio
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🏛️ Estructura del Proyecto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+donamed/
+├── src/
+│   ├── app/              # Next.js App Router
+│   │   ├── (routes)/     # Grupos de rutas
+│   │   └── api/          # API endpoints
+│   ├── client/           # Frontend (UI pura)
+│   │   ├── components/   # Componentes shadcn/ui
+│   │   └── modules/      # Módulos por dominio
+│   ├── server/           # Backend (lógica de negocio)
+│   │   ├── db/           # Drizzle ORM
+│   │   └── modules/      # Servicios por dominio
+│   └── shared/           # Tipos compartidos
+├── docs/                 # Documentación
+│   ├── ARCHITECTURE.md   # Arquitectura del sistema
+│   └── adr/              # Decisiones arquitectónicas
+└── .github/              # CI/CD y templates
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎯 Módulos Funcionales
 
-## Deploy on Vercel
+| Módulo | Descripción | Estado |
+|--------|-------------|--------|
+| **Identity** | Autenticación y perfiles | 🚧 En desarrollo |
+| **Inventory** | Catálogo de medicamentos | 📋 Planeado |
+| **Matchmaking** | Solicitudes y matching | 📋 Planeado |
+| **Coordination** | Chat y logística | 📋 Planeado |
+| **Resolution** | Evidencia y firmas | 📋 Planeado |
+| **Governance** | Panel administrativo | 📋 Planeado |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤝 Contribuir
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Lee nuestra [Guía de Contribución](./CONTRIBUTING.md) para conocer:
+
+- Estrategia de branching (AgileFlow)
+- Convenciones de commits (Conventional Commits)
+- Workflow de Pull Requests
+- Asignación de trabajo por rol
+
+### Conventional Commits
+
+```bash
+# Formato
+tipo(scope): descripción
+
+# Ejemplos
+git commit -m "feat(identity): add user registration"
+git commit -m "fix(inventory): correct validation"
+git commit -m "docs(readme): update setup instructions"
+```
+
+## 🧪 Testing
+
+```bash
+# Próximamente
+pnpm test              # Ejecutar tests
+pnpm test:watch        # Tests en modo watch
+pnpm test:coverage     # Reporte de cobertura
+```
+
+## 📚 Recursos
+
+- [ARCHITECTURE.md](./docs/ARCHITECTURE.md) - Arquitectura del sistema
+- [CONTRIBUTING.md](./CONTRIBUTING.md) - Guía de contribución
+- [ANALISIS_PROYECTO.md](./docs/ANALISIS_PROYECTO.md) - Análisis completo
+- [Conventional Commits](https://www.conventionalcommits.org/)
+- [Next.js Docs](https://nextjs.org/docs)
+- [Drizzle ORM](https://orm.drizzle.team/)
+- [shadcn/ui](https://ui.shadcn.com/)
+
+## 👥 Equipo
+
+- 1 Backend Developer
+- 1 Frontend Developer
+- 1 Fullstack Developer
+
+## 📄 Licencia
+
+[Especificar licencia]
+
+---
+
+**Desarrollado con ❤️ por el equipo de DonaMed**
