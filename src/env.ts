@@ -22,6 +22,11 @@ export const env = createEnv({
       .string()
       .optional()
       .transform((s) => s !== "false" && s !== "0"),
+
+    BETTER_AUTH_SECRET: z.string(),
+
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -38,11 +43,19 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    // Server
     NODE_ENV: process.env.NODE_ENV,
 
     DATABASE_URL: process.env.DATABASE_URL,
     DB_MIGRATING: process.env.DB_MIGRATING,
     DB_SEEDING: process.env.DB_SEEDING,
+
+    BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
+
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+
+    // Client
 
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
