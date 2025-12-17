@@ -18,7 +18,8 @@ export const signUpDtoSchema = z.object({
     .refine(
       (date) => calculateAge(date) >= 18,
       "User must be at least 18 years old"
-    ),
+    )
+    .optional(),
 });
 
 export type SignUpDto = z.infer<typeof signUpDtoSchema>;
