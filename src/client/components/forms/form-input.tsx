@@ -1,21 +1,17 @@
-import type { HTMLInputAutoCompleteAttribute } from "react";
-
 import { Field, FieldError, FieldLabel } from "@/client/components/ui/field";
-import { Input } from "@/client/components/ui/input";
+import { Input, InputProps } from "@/client/components/ui/input";
 
 import { useFieldContext } from "./form-context";
 
-
-export type FormInputProps = {
+export type FormInputProps = InputProps & {
   label: string;
-  placeholder?: string;
-  autoComplete?: HTMLInputAutoCompleteAttribute;
 };
 
 export function FormInput({
   label,
   placeholder,
   autoComplete,
+  ...props
 }: FormInputProps) {
   const field = useFieldContext<string>();
 
@@ -31,8 +27,10 @@ export function FormInput({
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}
         aria-invalid={isInvalid}
+        aria-describedby={isInvalid ? `${field.name}-error` : undefined}
         placeholder={placeholder}
         autoComplete={autoComplete}
+        {...props}
       />
 
       {isInvalid && <FieldError errors={field.state.meta.errors} />}
