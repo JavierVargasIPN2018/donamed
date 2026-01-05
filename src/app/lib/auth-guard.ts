@@ -65,7 +65,8 @@ export const createAuthGuard = cache(async (config: GuardConfig = {}) => {
 
   // Role-based access control
   if (requiredRoles && requiredRoles.length > 0 && session) {
-    const userRole = session.user.role as UserRole;
+    // Type-safe access to role property
+    const userRole = (session.user as { role?: UserRole }).role as UserRole;
     const hasRequiredRole = requiredRoles.includes(userRole);
 
     if (!hasRequiredRole) {
