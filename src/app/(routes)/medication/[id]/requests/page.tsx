@@ -7,20 +7,6 @@ import { RequestsList } from "@/client/modules/matchmaking/components/requests-l
 import { useRequestsForMedication } from "@/client/modules/matchmaking/hooks/use-medication-requests.hook";
 import { Skeleton } from "@/client/components/ui/skeleton";
 
-interface MedicationRequest {
-    id: string;
-    requesterName: string;
-    requesterPhone: string;
-    requesterImage?: string;
-    medicalSituation: string;
-    urgencyLevel: "low" | "medium" | "high" | "critical";
-    socioeconomicScore?: number;
-    trustScore?: "Alta" | "Media" | "Baja";
-    requestedAt: Date;
-    status: "pending" | "accepted" | "rejected";
-    prescriptionUrl?: string;
-}
-
 export default function MedicationRequestsPage() {
     const params = useParams();
     const router = useRouter();
@@ -37,7 +23,7 @@ export default function MedicationRequestsPage() {
         );
     }
 
-    const requests = (data as MedicationRequest[]) || [];
+    const requests = data || [];
 
     return (
         <main className="container mx-auto max-w-4xl px-4 py-6">
