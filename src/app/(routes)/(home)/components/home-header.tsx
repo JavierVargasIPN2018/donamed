@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-import { HouseIcon } from "lucide-react";
+import { HouseIcon, PlusCircle } from "lucide-react";
 
 import {
   DesktopNav,
@@ -19,11 +19,13 @@ import {
 
 import { authClient } from "@/app/lib/auth-client";
 
-
+import { Button } from "@/client/components/ui/button";
 import { UserMenuNavbar } from "@/client/modules/identity/features/navigation/user-menu/user-menu-navbar";
+import { useCreateMedicationModal } from "@/client/modules/inventory/features/create-medication/use-create-medication.modal";
 
 export function HomeHeader() {
   const pathname = usePathname();
+  const createModal = useCreateMedicationModal();
 
   const { data: session } = authClient.useSession();
 
@@ -43,6 +45,16 @@ export function HomeHeader() {
         </HeaderContent>
 
         <HeaderActions>
+          <Button
+            onClick={() => {
+              createModal.onOpen();
+            }}
+            variant="icon"
+            size="icon-lg"
+            className="gap-2 p-0 roundend-full"
+          >
+            <PlusCircle />
+          </Button>
           <UserMenuNavbar user={session?.user} />
         </HeaderActions>
       </HeaderContainer>

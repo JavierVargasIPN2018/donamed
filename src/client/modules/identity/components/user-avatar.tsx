@@ -38,7 +38,7 @@ const avatarVariants = cva(
 export interface UserAvatarProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof avatarVariants> {
-  name?: string;
+  name?: string | null;
   image?: string | null;
 }
 
