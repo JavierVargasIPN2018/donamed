@@ -6,20 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { RequestsList } from "@/client/modules/matchmaking/components/requests-list";
 import { useRequestsForMedication } from "@/client/modules/matchmaking/hooks/use-medication-requests.hook";
 import { Skeleton } from "@/client/components/ui/skeleton";
-
-interface MedicationRequest {
-    id: string;
-    requesterName: string;
-    requesterPhone: string;
-    requesterImage?: string;
-    medicalSituation: string;
-    urgencyLevel: "low" | "medium" | "high" | "critical";
-    socioeconomicScore?: number;
-    trustScore?: "Alta" | "Media" | "Baja";
-    requestedAt: Date;
-    status: "pending" | "accepted" | "rejected";
-    prescriptionUrl?: string;
-}
+import type { MedicationRequest } from "@/client/modules/matchmaking/types/medication-request.types";
 
 export default function MedicationRequestsPage() {
     const params = useParams();

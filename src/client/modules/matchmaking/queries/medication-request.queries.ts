@@ -6,6 +6,23 @@ import {
     getRequestsForMedicationAction,
     countPendingRequestsAction,
 } from "@/server/modules/matchmaking/features/requests/actions/medication-request.actions";
+import type { MedicationRequest as DBMedicationRequest } from "@/server/modules/matchmaking/infrastructure/db/medication-request.schema";
+import type { MedicationRequest } from "@/client/modules/matchmaking/types/medication-request.types";
+
+/**
+ * Convert database types (with null) to frontend types (with undefined)
+ */
+function convertToFrontendType(request: DBMedicationRequest): MedicationRequest {
+    return {
+        ...request,
+        socioeconomicScore: request.socioeconomicScore ?? undefined,
+        respondedAt: request.respondedAt ?? undefined,
+        expiresAt: request.expiresAt ?? undefined,
+        requesterImage: undefined, // Not in DB schema, may be added by other logic
+        trustScore: undefined, // Not in DB schema, may be added by other logic
+        prescriptionUrl: undefined, // Not in DB schema, may be added by other logic
+    };
+}
 
 export const medicationRequestQueries = {
     all: () => ["medication-requests"] as const,
@@ -26,7 +43,8 @@ export const medicationRequestQueries = {
             queryFn: async () => {
                 const result = await getRequestsForMedicationAction(medicationId);
                 if (!result.success) throw new Error(result.error);
-                return result.data || [];
+                const requests = result.data || [];
+                return requests.map(convertToFrontendType);
             },
         }),
 

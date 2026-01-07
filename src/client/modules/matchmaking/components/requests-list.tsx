@@ -21,20 +21,7 @@ import { Phone, Calendar, Award, FileText, ChevronDown, ChevronUp, Inbox, AlertT
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 import { useAcceptRequest, useRejectRequest } from "../hooks/use-medication-requests.hook";
-
-interface MedicationRequest {
-    id: string;
-    requesterName: string;
-    requesterPhone: string;
-    requesterImage?: string;
-    medicalSituation: string;
-    urgencyLevel: "low" | "medium" | "high" | "critical";
-    socioeconomicScore?: number;
-    trustScore?: "Alta" | "Media" | "Baja";
-    requestedAt: Date;
-    status: "pending" | "accepted" | "rejected";
-    prescriptionUrl?: string;
-}
+import type { MedicationRequest } from "../types/medication-request.types";
 
 interface RequestsListProps {
     requests: MedicationRequest[];

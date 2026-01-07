@@ -1,5 +1,5 @@
 import { db } from "@/server/db";
-import { medicationRequest } from "@/server/modules/matchmaking/infrastructure/db/medication-request.schema";
+import { medicationRequest, type MedicationRequest } from "@/server/modules/matchmaking/infrastructure/db/medication-request.schema";
 import { medication } from "@/server/modules/inventory/infrastructure/db/medication.schema";
 import type {
     CreateMedicationRequestDTO,
@@ -93,7 +93,7 @@ export class MedicationRequestUseCases {
     async getRequestsForMedication(
         medicationId: number,
         donorId: string
-    ): Promise<UseCaseResult<unknown[]>> {
+    ): Promise<UseCaseResult<MedicationRequest[]>> {
         try {
             // 1. Verify the medication belongs to the donor
             const med = await db.query.medication.findFirst({
@@ -142,7 +142,7 @@ export class MedicationRequestUseCases {
      */
     async getMyRequests(
         requesterId: string
-    ): Promise<UseCaseResult<unknown[]>> {
+    ): Promise<UseCaseResult<MedicationRequest[]>> {
         try {
             const requests = await db.query.medicationRequest.findMany({
                 where: eq(medicationRequest.requesterId, requesterId),

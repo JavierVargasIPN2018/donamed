@@ -10,6 +10,7 @@ import { RequestsList } from "@/client/modules/matchmaking/components/requests-l
 import { useMyMedications } from "@/client/modules/inventory/hooks/use-my-medications.hook";
 import { useRequestsForMedication } from "@/client/modules/matchmaking/hooks/use-medication-requests.hook";
 import { Skeleton } from "@/client/components/ui/skeleton";
+import type { MedicationRequest } from "@/client/modules/matchmaking/types/medication-request.types";
 
 export default function MyDonationsPage() {
     const [selectedDonation, setSelectedDonation] = useState<number | null>(null);
@@ -195,7 +196,7 @@ function RequestsListWrapper({ medicationId }: { medicationId: number }) {
         return <Skeleton className="h-48" />;
     }
 
-    const requests = data || [];
+    const requests = (data || []) as MedicationRequest[];
 
     return <RequestsList requests={requests} />;
 }
