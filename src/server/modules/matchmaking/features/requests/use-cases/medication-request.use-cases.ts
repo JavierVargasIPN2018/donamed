@@ -3,10 +3,15 @@ import { medicationRequest } from "@/server/modules/matchmaking/infrastructure/d
 import { medication } from "@/server/modules/inventory/infrastructure/db/medication.schema";
 import type {
     CreateMedicationRequestDTO,
-    UpdateRequestStatusDTO,
 } from "../dtos/medication-request.dto";
 import { eq, and, desc } from "drizzle-orm";
 import { addDays } from "date-fns";
+
+type UseCaseResult<T = unknown> = {
+    success: boolean;
+    data?: T;
+    error?: string;
+};
 
 export class MedicationRequestUseCases {
     /**
@@ -15,7 +20,7 @@ export class MedicationRequestUseCases {
     async createRequest(
         data: CreateMedicationRequestDTO,
         requesterId: string
-    ): Promise<{ success: boolean; data?: any; error?: string }> {
+    ): Promise<UseCaseResult> {
         try {
             // 1. Verify medication exists and is available
             const med = await db.query.medication.findFirst({
@@ -88,7 +93,7 @@ export class MedicationRequestUseCases {
     async getRequestsForMedication(
         medicationId: number,
         donorId: string
-    ): Promise<{ success: boolean; data?: any[]; error?: string }> {
+    ): Promise<UseCaseResult<unknown[]>> {
         try {
             // 1. Verify the medication belongs to the donor
             const med = await db.query.medication.findFirst({
@@ -137,7 +142,7 @@ export class MedicationRequestUseCases {
      */
     async getMyRequests(
         requesterId: string
-    ): Promise<{ success: boolean; data?: any[]; error?: string }> {
+    ): Promise<UseCaseResult<unknown[]>> {
         try {
             const requests = await db.query.medicationRequest.findMany({
                 where: eq(medicationRequest.requesterId, requesterId),
@@ -164,7 +169,7 @@ export class MedicationRequestUseCases {
     async acceptRequest(
         requestId: string,
         donorId: string
-    ): Promise<{ success: boolean; data?: any; error?: string }> {
+    ): Promise<UseCaseResult> {
         try {
             // 1. Get the request
             const request = await db.query.medicationRequest.findFirst({
@@ -241,7 +246,7 @@ export class MedicationRequestUseCases {
     async rejectRequest(
         requestId: string,
         donorId: string
-    ): Promise<{ success: boolean; data?: any; error?: string }> {
+    ): Promise<UseCaseResult> {
         try {
             // 1. Get the request
             const request = await db.query.medicationRequest.findFirst({
@@ -291,7 +296,7 @@ export class MedicationRequestUseCases {
     async cancelRequest(
         requestId: string,
         requesterId: string
-    ): Promise<{ success: boolean; data?: any; error?: string }> {
+    ): Promise<UseCaseResult> {
         try {
             // 1. Get the request
             const request = await db.query.medicationRequest.findFirst({
