@@ -8,6 +8,7 @@ import {
 } from "../inventory/components/medication-list";
 import { CreateMedicationModal } from "../inventory/features/create-medication/create-medication-dialog";
 import { FeedInputTrigger } from "./components/feed-input-trigger";
+import { RequestMedicationModalWrapper } from "../matchmaking/components/request-medication-modal-wrapper";
 
 export async function FeedPage({ user }: { user?: UserProfile }) {
   return (
@@ -23,6 +24,7 @@ export async function FeedPage({ user }: { user?: UserProfile }) {
       </div>
 
       <CreateMedicationModal userId={user?.id} isDonor={user?.isDonor} />
+      <RequestMedicationModalWrapper />
     </main>
   );
 }

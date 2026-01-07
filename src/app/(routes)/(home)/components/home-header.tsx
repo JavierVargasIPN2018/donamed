@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-import { HouseIcon, PlusCircle } from "lucide-react";
+import { HouseIcon, PlusCircle, Heart, FileText } from "lucide-react";
 
 import {
   DesktopNav,
@@ -31,6 +31,8 @@ export function HomeHeader() {
 
   const landingMenu: DesktopNavItem[] = [
     { href: "/", label: "Inicio", icon: HouseIcon },
+    { href: "/my-donations", label: "Mis Donaciones", icon: Heart },
+    { href: "/my-requests", label: "Mis Solicitudes", icon: FileText },
   ];
 
   return (

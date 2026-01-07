@@ -5,9 +5,14 @@ import { useMedications } from "../hooks/use-medications.hook";
 import { MedicationCard } from "./medication-card";
 import { MedicationCardSkeleton } from "./medication-card-skeleton";
 import { MedicationEmptyState } from "./medication-empty-state";
+import { authClient } from "@/app/lib/auth-client";
 
 export function MedicationList() {
-  const { data } = useMedications({ onlyVisible: false });
+  const { data } = useMedications({
+    onlyVisible: false,
+  });
+
+  const { data: session } = authClient.useSession();
 
   console.log(data);
 
@@ -18,7 +23,11 @@ export function MedicationList() {
   return (
     <div className="flex flex-col gap-4">
       {data.medications.map((med) => (
-        <MedicationCard key={med.id} medication={med} />
+        <MedicationCard
+          key={med.id}
+          medication={med}
+          currentUserId={session?.user?.id}
+        />
       ))}
     </div>
   );

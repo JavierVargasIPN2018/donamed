@@ -122,6 +122,7 @@ export const searchMedicationsSchema = z.object({
     .enum(["disponible", "reservado", "entregado", "cancelado"])
     .optional(),
   onlyVisible: z.boolean().default(true),
+  excludeOwnMedications: z.boolean().optional(),
 });
 
 export type SearchMedicationsDto = z.infer<typeof searchMedicationsSchema>;
