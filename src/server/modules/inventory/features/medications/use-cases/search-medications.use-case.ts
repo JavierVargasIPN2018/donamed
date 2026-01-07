@@ -1,4 +1,4 @@
-import { and, eq, getTableColumns, like } from "drizzle-orm";
+import { and, eq, getTableColumns, like, ne } from "drizzle-orm";
 
 import { db } from "@/server/db";
 import { medication } from "@server/modules/inventory/infrastructure/db/medication.schema";
@@ -8,7 +8,10 @@ import type { SearchMedicationsDto } from "../dtos/medication.dto";
 
 // ==================== CASO DE USO: BUSCAR MEDICAMENTOS (RF13) ====================
 
-export async function searchMedications(filters: SearchMedicationsDto) {
+export async function searchMedications(
+  filters: SearchMedicationsDto,
+  userId?: string
+) {
   try {
     const conditions = [];
 
@@ -30,6 +33,11 @@ export async function searchMedications(filters: SearchMedicationsDto) {
     }
     if (filters.onlyVisible !== false) {
       conditions.push(eq(medication.isVisible, true));
+    }
+
+    // Filter out own medications if requested and user is authenticated
+    if (filters.excludeOwnMedications && userId) {
+      conditions.push(ne(medication.donorId, userId));
     }
 
     // --- CAMBIO PRINCIPAL AQUÍ ---

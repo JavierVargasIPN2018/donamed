@@ -8,16 +8,22 @@ import { UserAvatar } from "@/client/modules/identity/components/user-avatar";
 
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
-import { Calendar, Clock, MapPin, Package } from "lucide-react";
+import { Calendar, Clock, MapPin, Package, Eye } from "lucide-react";
 
 import { Medication } from "@/client/types/medication.types";
 import { MedicationInteractions } from "./medication-interactions";
+import { useRouter } from "next/navigation";
+import { useRequestMedicationModal } from "@/client/modules/matchmaking/hooks/use-request-medication-modal";
 
 interface MedicationCardProps {
   medication: Medication;
+  currentUserId?: string;
 }
 
-export function MedicationCard({ medication }: MedicationCardProps) {
+export function MedicationCard({ medication, currentUserId }: MedicationCardProps) {
+  const router = useRouter();
+  const requestModal = useRequestMedicationModal();
+
   const formatExpiryDate = (date: Date | string) => {
     const d = typeof date === "string" ? new Date(date) : date;
     return new Intl.DateTimeFormat("es-MX", {
@@ -38,6 +44,24 @@ export function MedicationCard({ medication }: MedicationCardProps) {
         return "bg-red-500/10 text-red-700 dark:text-red-400 border-red-200/50";
       default:
         return "bg-muted text-muted-foreground";
+    }
+  };
+
+  // Check if this medication belongs to the current user
+  const isOwnMedication = currentUserId && medication.donorId === currentUserId;
+
+  const handleButtonClick = () => {
+    if (isOwnMedication) {
+      // Navigate to requests page for this medication
+      router.push(`/medication/${medication.id}/requests`);
+    } else {
+      // Open request modal
+      requestModal.onOpen({
+        medicationId: medication.id,
+        medicationName: medication.brand || medication.activeSubstance,
+        medicationDosage: medication.dosage,
+        isControlled: medication.isControlled,
+      });
     }
   };
 
@@ -157,8 +181,20 @@ export function MedicationCard({ medication }: MedicationCardProps) {
             </div>
           )}
 
-          <Button className="w-full font-medium" size="lg">
-            Solicitar medicamento
+          <Button
+            className="w-full font-medium"
+            size="lg"
+            onClick={handleButtonClick}
+            variant={isOwnMedication ? "outline" : "default"}
+          >
+            {isOwnMedication ? (
+              <>
+                <Eye className="w-4 h-4 mr-2" />
+                Ver solicitudes
+              </>
+            ) : (
+              "Solicitar medicamento"
+            )}
           </Button>
         </div>
       </CardContent>

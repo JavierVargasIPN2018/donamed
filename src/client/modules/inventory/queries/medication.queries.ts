@@ -13,6 +13,8 @@ export const medicationQueries = {
       queryParams.set("status", filters.status || "disponible");
     if (filters.onlyVisible !== undefined)
       queryParams.set("onlyVisible", String(filters.onlyVisible));
+    if (filters.excludeOwnMedications !== undefined)
+      queryParams.set("excludeOwnMedications", String(filters.excludeOwnMedications));
 
     return queryOptions({
       queryKey: ["medications", "search", filters],

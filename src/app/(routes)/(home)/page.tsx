@@ -8,7 +8,9 @@ export default async function HomePage() {
   const session = await getSession();
   const queryClient = getQueryClient();
 
-  const filters = { onlyVisible: false };
+  const filters = {
+    onlyVisible: false,
+  };
   await queryClient.prefetchQuery(medicationQueries.search(filters));
 
   return (

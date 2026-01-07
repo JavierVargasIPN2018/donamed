@@ -12,6 +12,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
+  // Get user session to filter own medications if needed
+  const session = await auth.api.getSession({ headers: req.headers });
+
   const rawParams = {
     activeSubstance: searchParams.get("activeSubstance") || undefined,
     dosage: searchParams.get("dosage") || undefined,
@@ -21,6 +24,7 @@ export async function GET(req: NextRequest) {
       ? Number(searchParams.get("maxDistance"))
       : undefined,
     onlyVisible: searchParams.get("onlyVisible") === "false" ? false : true,
+    excludeOwnMedications: searchParams.get("excludeOwnMedications") === "true",
   };
 
   const resultValidation = searchMedicationsSchema.safeParse(rawParams);
@@ -32,7 +36,10 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const result = await searchMedications(resultValidation.data);
+  const result = await searchMedications(
+    resultValidation.data,
+    session?.user?.id // Pass userId to filter
+  );
   return NextResponse.json(result);
 }
 
