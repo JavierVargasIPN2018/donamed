@@ -11,6 +11,7 @@ import type { MedicationRequest } from "@/client/modules/matchmaking/types/medic
 
 /**
  * Convert database types (with null) to frontend types (with undefined)
+ * Also adds fields that may be enriched from other sources (user profile, computed scores)
  */
 function convertToFrontendType(request: DBMedicationRequest): MedicationRequest {
     return {
@@ -18,9 +19,10 @@ function convertToFrontendType(request: DBMedicationRequest): MedicationRequest 
         socioeconomicScore: request.socioeconomicScore ?? undefined,
         respondedAt: request.respondedAt ?? undefined,
         expiresAt: request.expiresAt ?? undefined,
-        requesterImage: undefined, // Not in DB schema, may be added by other logic
-        trustScore: undefined, // Not in DB schema, may be added by other logic
-        prescriptionUrl: undefined, // Not in DB schema, may be added by other logic
+        // Fields not in DB schema - may be enriched from user profile or computed
+        requesterImage: undefined,
+        trustScore: undefined,
+        prescriptionUrl: undefined,
     };
 }
 

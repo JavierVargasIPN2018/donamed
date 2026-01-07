@@ -6,7 +6,6 @@ import { ArrowLeft } from "lucide-react";
 import { RequestsList } from "@/client/modules/matchmaking/components/requests-list";
 import { useRequestsForMedication } from "@/client/modules/matchmaking/hooks/use-medication-requests.hook";
 import { Skeleton } from "@/client/components/ui/skeleton";
-import type { MedicationRequest } from "@/client/modules/matchmaking/types/medication-request.types";
 
 export default function MedicationRequestsPage() {
     const params = useParams();
@@ -24,7 +23,7 @@ export default function MedicationRequestsPage() {
         );
     }
 
-    const requests = (data as MedicationRequest[]) || [];
+    const requests = data || [];
 
     return (
         <main className="container mx-auto max-w-4xl px-4 py-6">
