@@ -101,7 +101,7 @@ export function FormImageKitUploader({
 
       onUploadComplete?.(uploadResponse.url);
 
-      console.log("Upload successful:", uploadResponse);
+      // console.log("Upload successful:", uploadResponse);
     } catch (error) {
       let errorMessage = "Error al subir la imagen";
 

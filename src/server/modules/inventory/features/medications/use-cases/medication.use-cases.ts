@@ -43,8 +43,9 @@ export async function createMedication(
         } else {
           processedPhotoUrl = urlObj.pathname;
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
-        console.log(e);
+        // console.log(e);
 
         console.warn(
           "No se pudo parsear la URL de la foto, guardando valor original"
