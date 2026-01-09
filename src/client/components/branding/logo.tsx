@@ -8,9 +8,9 @@ import * as React from "react";
 const logoVariants = cva("relative inline-block", {
   variants: {
     size: {
-      sm: "h-6 w-auto",
-      md: "h-8 w-auto",
-      lg: "h-12 w-auto",
+      sm: "h-4 md:h-6 w-auto",
+      md: "h-6 md:h-8 w-auto",
+      lg: "h-10 md:h-12 w-auto",
     },
   },
   defaultVariants: {
