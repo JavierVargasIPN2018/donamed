@@ -1,48 +1,44 @@
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { toast } from "sonner";
+import { SETTINGS_ROUTES } from "../config/routes";
 
-interface UseDonationGuardOptions {
-  userId?: string | null;
+interface UserContext {
+  id: string;
   isDonor?: boolean;
-  hasCompletedProfile?: boolean;
-  onValidated?: () => void;
 }
 
-/**
- * Hook to validate user authentication and donor status before allowing donations.
- * Redirects users through the proper flow: login -> profile completion -> donation.
- *
- * @reasoning This hook encapsulates the complex validation logic in one place,
- * making it reusable across the app and keeping components clean.
- */
-export function useDonationGuard({
-  userId,
-  isDonor,
-  onValidated,
-}: UseDonationGuardOptions) {
+export function useDonationValidator() {
   const router = useRouter();
 
-  useEffect(() => {
-    // Not authenticated -> redirect to sign-in
-    if (!userId) {
-      toast.error("Por favor inicia sesión para poder donar medicamentos");
-      router.push("/sign-in?callbackUrl=/donate");
+  const validateAndExecute = (
+    user: UserContext | null | undefined,
+    action: () => void
+  ) => {
+    if (!user || !user.id) {
+      toast.error("Inicia sesión para realizar una donación", {
+        description: "Necesitamos saber quién eres para gestionar la donación.",
+      });
+
+      router.push("/sign-in?callbackUrl=/");
       return;
     }
 
-    // Not a donor -> redirect to donor registration
-    if (!isDonor) {
-      toast.info("Completa tu perfil de donante para comenzar a donar");
-      // router.push("/settings/profile");
+    if (!user.isDonor) {
+      toast.info("Perfil de donante requerido", {
+        description: "Completa tus datos básicos para poder donar.",
+        action: {
+          label: "Completar",
+          onClick: () => router.push(SETTINGS_ROUTES.profile.donor),
+        },
+      });
+      router.push(SETTINGS_ROUTES.profile.donor);
       return;
     }
 
-    // All validations passed
-    onValidated?.();
-  }, [userId, isDonor, router, onValidated]);
+    action();
+  };
 
   return {
-    isValid: userId && isDonor,
+    validateAndExecute,
   };
 }
