@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-import { FileText, Heart, HouseIcon, PlusCircle } from "lucide-react";
+import { FileText, Heart, HouseIcon, PlusCircle, Search } from "lucide-react";
 
 import {
   DesktopNav,
@@ -23,6 +23,7 @@ import { Button } from "@/client/components/ui/button";
 import { useDonationValidator } from "@/client/hooks/use-donation-guard";
 import { UserMenuNavbar } from "@/client/modules/identity/features/navigation/user-menu/user-menu-navbar";
 import { useCreateMedicationModal } from "@/client/modules/inventory/features/create-medication/use-create-medication.modal";
+import { toast } from "sonner";
 
 export function HomeHeader() {
   const pathname = usePathname();
@@ -56,6 +57,18 @@ export function HomeHeader() {
         </HeaderContent>
 
         <HeaderActions>
+          <Button
+            onClick={() =>
+              toast.warning(
+                "El administrador debe habilidar esta funcionalidad"
+              )
+            }
+            variant="icon"
+            size="icon-lg"
+            className="gap-2 p-0 roundend-full"
+          >
+            <Search />
+          </Button>
           <Button
             onClick={handleCreateClick}
             variant="icon"
