@@ -57,8 +57,6 @@ export function useDonorProfileForm({
       onSubmit: donorProfileSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
-
       const payload = {
         ...value,
         // Limpiar campos opcionales vacíos
