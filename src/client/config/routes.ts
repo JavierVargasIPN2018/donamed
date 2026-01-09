@@ -18,6 +18,13 @@ export const SETTINGS_ROUTES = {
   },
 } as const;
 
+export const ADMIN_ROUTES = {
+  dashboard: "/admin",
+  medications: "/admin/medications",
+  requests: "/admin/requests",
+  users: "/admin/users",
+} as const;
+
 export const ROUTES = {
   ...PUBLIC_ROUTES,
 };
