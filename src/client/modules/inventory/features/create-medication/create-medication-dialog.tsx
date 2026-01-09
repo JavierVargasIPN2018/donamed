@@ -8,8 +8,6 @@ import {
   DialogTitle,
 } from "@/client/components/ui/dialog";
 
-import { useDonationGuard } from "@/client/hooks/use-donation-guard";
-
 import { CreateMedicationForm } from "./create-medication.form";
 import { useCreateMedicationModal } from "./use-create-medication.modal";
 
@@ -22,13 +20,7 @@ export function CreateMedicationModal({
 }) {
   const { isOpen, onClose } = useCreateMedicationModal();
 
-  const { isValid } = useDonationGuard({
-    userId,
-    isDonor,
-    onValidated: () => {},
-  });
-
-  if (isOpen && !isValid) {
+  if (isOpen && !isDonor) {
     return null;
   }
 
